@@ -4,16 +4,22 @@ import com.fh.entity.po.Student;
 import com.fh.entity.vo.DataTablesData;
 import com.fh.entity.vo.TableSearch;
 import com.fh.service.StudentService;
+import com.fh.utils.ExportExcel;
 import com.fh.utils.FileUtilesalbb;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("student")
@@ -104,6 +110,24 @@ public class StudentController {
             map.put("remark",e.getMessage());
         }
         return map;
+    }
+
+    @GetMapping("importExcel")
+    public void updateStudent(HttpServletResponse response) throws InvocationTargetException, NoSuchMethodException, IOException, IllegalAccessException {
+        List<Student> list = studentService.queryStudentList();
+        XSSFWorkbook xssfSheets = ExportExcel.exportExcel(list, Student.class);
+        //下载文件
+        //设置编码
+        response.setCharacterEncoding("utf-8");
+        //设置响应数据类型
+        response.setContentType("application/octet-stream");//设置响应类型 告诉浏览器输出内容为流
+        //设置响应文件名
+        response.setHeader("Content-disposition", "attachment;filename=" + UUID.randomUUID().toString() + ".xlsx");
+        //获取响应流
+        ServletOutputStream os = response.getOutputStream();
+        //将workbook的内容 写入输出流中
+        xssfSheets.write(os);
+        os.close();
     }
 
 }

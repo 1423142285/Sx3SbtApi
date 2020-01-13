@@ -112,6 +112,14 @@
       <version>1.3.2</version>
     </dependency>
 
+    <!-- poi 的jar包 -->
+    <!-- 解析xml文件的poi包 -->
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>3.9</version>
+    </dependency>
+
   </dependencies>
 
   <build>

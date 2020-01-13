@@ -62,4 +62,9 @@ public class StudentServiceImpl implements StudentService {
     public Student queryStudentById(Integer id) {
         return studentDao.selectById(id);
     }
+
+    @Override
+    public List<Student> queryStudentList() {
+        return studentDao.selectList(null);
+    }
 }
