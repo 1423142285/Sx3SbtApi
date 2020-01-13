@@ -10,6 +10,6 @@ public interface StudentDao extends BaseMapper<Student> {
     long queryCount();
 
     List<Student> queryStudentList(TableSearch search);
-    
+
 
 }
